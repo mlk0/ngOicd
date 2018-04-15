@@ -1,0 +1,93 @@
+ 
+
+
+    <head>
+            <title></title>
+        </head>
+        <body>
+            YO!
+                <!-- <script src="oidc-client.min.js" type="javascript"></script> -->
+                <script src="oidc-client.min.js"></script>
+
+   
+                <!-- <script>
+                    console.log("doing silent refresh")
+                        new UserManager().signinSilentCallback().then(silentRefreshResponse=>{
+                            console.log("finished silent refresh");
+                            console.log(silentRefreshResponse);
+                            })
+                            .catch((err) => {
+                                console.log("finished silent refresh with some errors");
+                                
+                                console.log(err);
+                            });
+                    </script> -->
+
+
+                    <script>
+// console.log("doing silent refresh 123");
+
+ 
+
+  var Oidc = window.Oidc;
+ console.log(Oidc);
+ //console.log(Oidc.UserManager())
+
+ console.log(new Oidc.UserManager())
+// console.log(Oidc.UserManager);
+// var Oidc = window.Oidc,
+//     UserManager = Oidc.UserManager;
+    
+//     console.log(Oidc);
+
+    
+//     console.log(UserManager);
+// if ((Oidc && Oidc.Log && Oidc.Log.logger)) {
+//     Oidc.Log.logger = console;
+// }
+// //new UserManager().signinSilentCallback();
+// Oidc.UserManager().signinSilentCallback();
+
+                            console.log("doing silent refresh")
+                                new Oidc.UserManager().signinSilentCallback().then(function(silentRefreshResponse) {
+                                    
+                                    console.log("finished silent refresh");
+
+
+                                    new Oidc.UserManager().getUser().then(user => {
+                                        //this.user = 
+                                        
+                                       // console.log(user);
+                                        console.log(user.expired);
+                                        console.log(user.expires_in);
+                                        })
+
+
+                                    console.log(silentRefreshResponse);
+                                    })
+                                    .catch(function(err) {
+                                        console.log("finished silent refresh with some errors");
+                                        
+                                        console.log(err);
+                                    });
+
+
+        //                      new Oidc.UserManager().signinSilentCallback()
+        // .catch((err) => {
+        //     console.log(err);
+        // });
+
+                            </script>
+
+
+
+        </body>
+
+
+             <!-- <script src="..\node_modules\oidc-client\lib\oidc-client.min.js" type="javascript">
+
+            C:\gits\pocs\ngOicd\node_modules\oidc-client\lib\oidc-client.min.js
+            console.log("hello");
+
+   
+        </script> -->

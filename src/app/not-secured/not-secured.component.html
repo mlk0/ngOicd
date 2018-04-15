@@ -1,0 +1,20 @@
+<app-user-status></app-user-status>
+<div class="unsecure">
+
+    <p>
+        not-secured works!
+      </p>
+      <div>
+          <p>
+              Anyone can access this page and as far as the user is concerned the following are the valid scenarios:
+            
+            </p>
+            <ul>
+                <li>the user is not authenticated -> there is no user token</li>
+                <li>the user is authenticated but the token is no longer valid -> the token is expired</li>
+                <li>the user is authenticated and has valid token -> the token is not yet expired</li>
+                
+              </ul>
+      </div>
+      
+</div>

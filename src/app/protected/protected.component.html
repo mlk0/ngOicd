@@ -1,0 +1,9 @@
+<app-user-status></app-user-status>
+<p class="protected">
+  {{user$.expires_in}}}
+</p>
+
+<form [formGroup]="fg" (ngSubmit)="fgSubmit(fg)">
+  <input type="text" [formControl]="fg.controls['textInput']">
+  <button type="submit">Submit</button>
+</form>
