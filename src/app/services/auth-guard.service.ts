@@ -21,7 +21,7 @@ export class AuthGuardService implements CanActivate {
       if(isLoggedIn)
         return true;
       else{
-        localStorage.setItem('requestedRoute',route.url.toString());
+        localStorage.setItem('requestedRoute', JSON.stringify(route.url));
         this.authService.startAuthentication();
         return false;
       }
