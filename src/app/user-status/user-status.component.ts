@@ -10,35 +10,18 @@ import { User } from 'oidc-client';
 })
 export class UserStatusComponent implements OnInit {
 
+  expiresAtDate: Date;
+  
   user$ : Observable<User>;
   constructor(private authService: AuthService) { 
-    //this.user$ = this.authService.UserSubject.asObservable();
+   
   }
 
   ngOnInit() {
-    // this.authService.UserObservable.subscribe(user => {
-    //   let tokenExpired = user ? user.expired : true;
+    this.user$ = this.authService.UserObservable;
 
-    //   console.log(`WelcomeComponent - UserObservable updated - token is expired or unavailable: ${tokenExpired}`);
-    // })
-
- // var a =  this.authService.UserSubject.asObservable()
-    // this.authService.UserSubject.subscribe(user => {
-    //   let tokenExpired = user ? user.expired : true;
-
-    //   console.log(`UserStatusComponent - user$ updated - token is expired or unavailable: ${tokenExpired}`);
-    // })
-  //  this.authService.UserObservable
-  //  this.user$ = this.authService.UserSubject.asObservable();
-    // this.user$.subscribe(user => {
-    //   let tokenExpired = user ? user.expired : true;
-
-    //   console.log(`UserStatusComponent - user$ updated - token is expired or unavailable: ${tokenExpired}`);
-    // })
-
-
-    this.user$ = this.authService.UserSubject.asObservable();
-    
-
+    this.user$.subscribe(u=>{
+     this.expiresAtDate = new Date(u.expires_at*1000);
+    })
   }
 }

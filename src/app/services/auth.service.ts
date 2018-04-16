@@ -8,7 +8,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 export class AuthService {
 
   UserObservable: Observable<User>;
-  UserSubject = new Subject<User>();
+  UserSubject : Subject<User>;
 
   //entry point into the oidc-client library where all interactions with oidc library are encapsulated
   private manager: UserManager = new UserManager(getClientSettings());
@@ -16,55 +16,53 @@ export class AuthService {
 
   constructor() {
 
+    this.UserSubject = new Subject<User>();
     this.UserObservable = this.UserSubject.asObservable();
 
     //as soon as initialiazing the AuthService, get the user object through the UserManager
     this.manager.getUser().then(user => {
       this.user = user;
 
+      
       //trigger the update to all the subsribers to the UserSubject
       this.UserSubject.next(user);  
    
     });
-
-    //this.UserObservable = Observable.fromPromise(this.manager.getUser());
-    //this.UserObservable = this.UserSubject.asObservable();
-    
+ 
   }
 
-  isUserLoggedIn(): boolean {
-    //if we have a user and if we do, well check if it is still has a valid (not expired) token
-    return this.user != null && !this.user.expired;
-  }
+  // isUserLoggedIn(): boolean {
+  //   //if we have a user and if we do, well check if it is still has a valid (not expired) token
+  //   return this.user != null && !this.user.expired;
+  // }
 
   //guard can subscribe to this and decide when to continue the redirection
-  isLoggedIn(requestedRoute : string): Observable<boolean> {
+  // isLoggedIn(requestedRoute : string): Observable<boolean> {
 
-    let userPromise = this.manager.getUser();
-    this.UserObservable = Observable.fromPromise(userPromise);
+  //   let userPromise = this.manager.getUser();
+  //   this.UserObservable = Observable.fromPromise(userPromise);
 
-    return Observable.fromPromise(userPromise)
-    .map<User, boolean>((user) => {
+  //   return Observable.fromPromise(userPromise)
+  //   .map<User, boolean>((user) => {
 
-      //update all those subsribed to the UserSubject
-      this.UserSubject.next(user);
+  //     //update all those subsribed to the UserSubject
+  //     this.UserSubject.next(user);
 
-      if (user && !user.expired) {
-        return true;
-      } else {
+  //     if (user && !user.expired) {
+  //       return true;
+  //     } else {
 
-        return false;
-      }
-    });
-  }
+  //       return false;
+  //     }
+  //   });
+  // }
 
   isLoggedInX(): Promise<boolean> {
 
     return this.manager.getUser().then(user => {
       this.user = user;
     
-      // console.log(`AuthService.isLoggedInX, user : ${JSON.stringify(user) }`);
-      //trigger the update to all the subsribers to the UserSubject
+     
 
       if(user){
         this.UserSubject.next(user);
@@ -87,30 +85,7 @@ export class AuthService {
     });
   }
 
-  // isLoggedInY(): boolean {
-
-  //   let promise = this.manager.getUser().then(user => {
-  //     this.user = user;
-
-  //     //trigger the update to all the subsribers to the UserSubject
-  //     this.UserSubject.next(user);
-
-  //     if (user && !user.expired) {
-  //       return true;
-  //     } else {
-  //       return false;
-  //     }
-
-  //   });
-
-  //   // var a = yield promise;
-  //   // |         return a;
-
-  //   let a = await promise; 
-   
-  //  return a;
-
-  // }
+ 
 
 
   getClaims(): any {
@@ -141,6 +116,8 @@ export class AuthService {
     return this.manager.signinRedirectCallback().then(user => {
       this.user = user;
 
+      console.log('AuthService.completeAuthentication - refreshing the retrieved user >>>>>>>>>>> ')
+    
       this.UserSubject.next(user);
       
     });

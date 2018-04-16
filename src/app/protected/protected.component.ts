@@ -19,6 +19,20 @@ export class ProtectedComponent implements OnInit {
   fb: FormBuilder;
   constructor(private authService : AuthService, formBuilder : FormBuilder) {
      
+        //get the observable
+        this.user$ = this.authService.UserObservable;
+         
+
+        //this.authService.UserObservable.subscribe(user=>{
+        this.user$.subscribe(user=>
+        {
+           let tokenExpired = user ? user.expired  : true;     
+  
+            console.log(`ProtectedComponent.ngOnInit - UserSubject UPDATED - user.expired: ${user.expired}, expires_in : ${user.expires_in}, user.expires_at : ${user.expires_at}`);
+            this.user = user;
+        })
+
+
       this.fb = formBuilder;
       this.fg = formBuilder.group({     
       });
@@ -29,102 +43,30 @@ export class ProtectedComponent implements OnInit {
 
    }
 
-
-
-test(){
-
-  var userSubject = new Subject<User>();
-
-  // userSubject.next()
-  //observer or Subscriber
-  const simpleObservable = new Observable((observer) => {
-    
-    // observable execution
-    observer.next("bla bla bla")
-    observer.complete()
-})
-
-
-}
+ 
 
 
 
   ngOnInit() {
 
-    //get the observable
-    this.user$ = this.authService.UserSubject;
 
-      //this.authService.UserObservable.subscribe(user=>{
-      this.user$.subscribe(user=>
-      {
-         let tokenExpired = user ? user.expired  : true;     
-
-          console.log(`ProtectedComponent.ngOnInit - UserSubject UPDATED - user.expired: ${user.expired}, expires_in : ${user.expires_in}, user.expires_at : ${user.expires_at}`);
-          this.user = user;
-      })
 
 
   }
+
+
 
 
   fgSubmit(fg : FormGroup){
 
     console.log(fg.value);
 
-    this.authService.isLoggedInX().then(r=>{
-      console.log(`user is logged in : ${r}`);
+    //check if the user is still valid before calling any API
+    this.authService.isLoggedInX().then(isUserLoggedIn=>{
+      console.log(`ProtectedComponent.fgSubmit - isUserLoggedIn : ${isUserLoggedIn}`);
     });
- //   console.log(`ProtectedComponent.fgSubmit - UserObservable state - user.expired: ${this.user$.expired | async}, expires_in : ${this.user$.expires_in | async}, user.expires_at : ${this.user.expires_at | async}`);
-          
-    // this.authService.isLoggedIn("dasd").subscribe(isLoggedIn =>  {
-    //   console.log(`it is really logged in : ${isLoggedIn}`);
-
-    //   if(isLoggedIn){
-
-    //   }
-    //   else{
-
-    //   }
-    
-    // });
-
-  }
-
-  // fgSubmitX(fg : FormGroup){
-  //   console.log(fg);
-  //   console.log(fg.value);
-
-  //   this.authService.isLoggedIn("dasd").subscribe(isLoggedIn =>  {
-  //     if(isLoggedIn){
-  //       console.log("it is really logged in");
-        
-  //       this.user$.subscribe(user=>{
-  //         let tokenExpired = user ? user.expired  : true;     
  
-  //      console.log(`tokenExpired : ${tokenExpired}`);
-  //      console.log(`user.expires_in: ${user.expires_in}`);
-  //    })
-
-
-  //     }
-  //     else{
-
-
-  //       this.user$.subscribe(user=>{
-  //         let tokenExpired = user ? user.expired  : true;  
-  //         console.log(`tokenExpired: ${tokenExpired}`);
-  //      console.log(`user.expires_in: ${user.expires_in}`);
-
-  //     });
-
-  //   }
-
-  //   this.authService.UserObservable.subscribe(u=>{
-  //     console.log(u.expired);
-  //     console.log(u.expires_at);
-  //     console.log(u.expires_in);
-  //   });
-
-  // }
+  }
+ 
 
 }

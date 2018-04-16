@@ -1,6 +1,8 @@
-<app-user-status></app-user-status>
 <p class="protected">
-  {{user$.expires_in}}
+  expires_in :  
+
+  {{(this.authService.UserObservable | async)?.expires_in}}
+
 </p>
 
 <form [formGroup]="fg" (ngSubmit)="fgSubmit(fg)">

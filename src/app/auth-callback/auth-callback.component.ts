@@ -12,18 +12,7 @@ export class AuthCallbackComponent implements OnInit {
 
   ngOnInit() {
     console.log("ngOnInit of AuthCallbackComponent")
-    //this.authService.completeAuthentication();
-    
-    // this.authService.completeAuthenticationAndSetOriginallyRequestedRoute().then(
-    //   function (originallyRequestedRoute : string) {
-    //     console.log(`completeAuthenticationAndSetOriginallyRequestedRoute.then - originallyRequestedRoute : ${originallyRequestedRoute}`);
-
-    //   }
-    // );
-
-   // this.authService.completeAuthenticationAndSetOriginallyRequestedRouteAndUserObservable();
-
-
+ 
    this.authService.completeAuthentication().then(c=>{
     console.log(`AuthCallbackComponent.completeAuthentication`);
 
@@ -31,12 +20,22 @@ export class AuthCallbackComponent implements OnInit {
 
 
     var requestedRoute = localStorage.getItem('requestedRoute');
- 
+  
  
 
     console.log(`AuthCallbackComponent.completeAuthentication - requestedRoute : ${requestedRoute}`);
-    if(requestedRoute){
-      this.router.navigateByUrl(requestedRoute);
+    if(requestedRoute)
+    {
+      let urlSegments : UrlSegment[] = JSON.parse(requestedRoute);
+      if(urlSegments && urlSegments.length > 0){
+        var route = urlSegments[0];
+        console.log(`AuthCallbackComponent - Originally requested route was found route.path : ${route.path}`)
+        this.router.navigateByUrl(route.path);
+      }
+      else{
+        this.router.navigateByUrl("");
+      }
+      
     }
 
    });
