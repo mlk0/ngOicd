@@ -21,7 +21,11 @@ export class UserStatusComponent implements OnInit {
     this.user$ = this.authService.UserObservable;
 
     this.user$.subscribe(u=>{
-     this.expiresAtDate = new Date(u.expires_at*1000);
+      if(u)
+      {
+        this.expiresAtDate = new Date(u.expires_at*1000);
+      }
+     
     })
   }
 }

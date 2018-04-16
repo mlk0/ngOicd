@@ -178,8 +178,16 @@ export function getClientSettings(): UserManagerSettings {
     
     //TODO: try with both id_token and token
     response_type: 'token', //"id_token token",
+    // response_type: 'id_token token',
+    // response_type: 'token id_token',
 
-    scope: 'customer', //"openid profile api1",
+    //scope: "openid profile api1",
+    // scope: 'openid profile customer',
+    // scope: 'openid customer',
+    //scope: 'openid',
+    scope: 'customer',
+    
+
     filterProtocolClaims: true, // protocol level claims such as nbf, iss, at_hash, and nonce from being extracted from the identity token as profile data. These claims aren’t typically of much use outside of token validation
     loadUserInfo: true, //allows the library to automatically call the OpenID Connect Provider’s User Info endpoint using the received access token, in order to access additional identity data about the authenticated user. This is true by default
   
