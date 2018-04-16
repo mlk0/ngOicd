@@ -171,7 +171,9 @@ export function getClientSettings(): UserManagerSettings {
     //TODO:  1. update this to read from ENV file,  
     //FIXME: 2. tokenize the environment.prod.ts  
     //TODO:  3. provide the environment specific token values in Octopus
-    authority: 'https://localhost:44300/identity', //'http://localhost:5555/',
+    //authority: 'https://localhost:44300/identity', //'http://localhost:5555/',
+    authority: 'https://dev-ws-esa.np.dhltd.com/identity', //'http://localhost:5555/',
+    
     client_id: 'js', //'angular_spa',
     redirect_uri: 'http://localhost:4200/auth-callback',  //registered URI that the OpenID Connect provider can redirect a user to once they log out
     post_logout_redirect_uri: 'http://localhost:4200/',
