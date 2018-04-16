@@ -3,6 +3,7 @@ import { AuthService } from '../services/auth.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { User } from 'oidc-client';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-protected',
@@ -24,20 +25,41 @@ export class ProtectedComponent implements OnInit {
 
       var textInputFormControl = formBuilder.control('');
       this.fg.addControl('textInput',textInputFormControl);
+      
 
    }
+
+
+
+test(){
+
+  var userSubject = new Subject<User>();
+
+  // userSubject.next()
+  //observer or Subscriber
+  const simpleObservable = new Observable((observer) => {
+    
+    // observable execution
+    observer.next("bla bla bla")
+    observer.complete()
+})
+
+
+}
+
+
 
   ngOnInit() {
 
     //get the observable
-    this.user$ = this.authService.UserObservable;
+    this.user$ = this.authService.UserSubject;
 
       //this.authService.UserObservable.subscribe(user=>{
       this.user$.subscribe(user=>
       {
          let tokenExpired = user ? user.expired  : true;     
 
-          console.log(`ProtectedComponent.ngOnInit - UserObservable updated - user.expired: ${user.expired}, expires_in : ${user.expires_in}, user.expires_at : ${user.expires_at}`);
+          console.log(`ProtectedComponent.ngOnInit - UserSubject UPDATED - user.expired: ${user.expired}, expires_in : ${user.expires_in}, user.expires_at : ${user.expires_at}`);
           this.user = user;
       })
 
@@ -49,19 +71,22 @@ export class ProtectedComponent implements OnInit {
 
     console.log(fg.value);
 
-    console.log(`ProtectedComponent.fgSubmit - UserObservable state - user.expired: ${this.user.expired}, expires_in : ${this.user.expires_in}, user.expires_at : ${this.user.expires_at}`);
-          
-    this.authService.isLoggedIn("dasd").subscribe(isLoggedIn =>  {
-      console.log(`it is really logged in : ${isLoggedIn}`);
-
-      if(isLoggedIn){
-
-      }
-      else{
-
-      }
-    
+    this.authService.isLoggedInX().then(r=>{
+      console.log(`user is logged in : ${r}`);
     });
+ //   console.log(`ProtectedComponent.fgSubmit - UserObservable state - user.expired: ${this.user$.expired | async}, expires_in : ${this.user$.expires_in | async}, user.expires_at : ${this.user.expires_at | async}`);
+          
+    // this.authService.isLoggedIn("dasd").subscribe(isLoggedIn =>  {
+    //   console.log(`it is really logged in : ${isLoggedIn}`);
+
+    //   if(isLoggedIn){
+
+    //   }
+    //   else{
+
+    //   }
+    
+    // });
 
   }
 

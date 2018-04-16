@@ -30,10 +30,10 @@
  
 
   var Oidc = window.Oidc;
- console.log(Oidc);
+ //console.log(Oidc);
  //console.log(Oidc.UserManager())
 
- console.log(new Oidc.UserManager())
+// console.log(new Oidc.UserManager())
 // console.log(Oidc.UserManager);
 // var Oidc = window.Oidc,
 //     UserManager = Oidc.UserManager;
@@ -54,16 +54,16 @@
                                     console.log("finished silent refresh");
 
 
-                                    new Oidc.UserManager().getUser().then(user => {
-                                        //this.user = 
+                                    // new Oidc.UserManager().getUser().then(user => {
+                                    //     //this.user = 
                                         
-                                       // console.log(user);
-                                        console.log(user.expired);
-                                        console.log(user.expires_in);
-                                        })
+                                    //    // console.log(user);
+                                    //     console.log(user.expired);
+                                    //     console.log(user.expires_in);
+                                    //     })
 
 
-                                    console.log(silentRefreshResponse);
+                                    //console.log(silentRefreshResponse);
                                     })
                                     .catch(function(err) {
                                         console.log("finished silent refresh with some errors");

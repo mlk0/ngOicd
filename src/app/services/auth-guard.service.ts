@@ -6,11 +6,28 @@ import { AuthService } from './auth.service';
 
 @Injectable()
 export class AuthGuardService implements CanActivate {
-
+  
   
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Observable<boolean> | Promise<boolean> {
     
-    console.log(`in AuthGuardService, guarding : ${route.url}`);
+    console.log(`in AuthGuardService, guarding : ${route.url.toString()}`);
+
+
+    let isUserLoggedIn = this.authService.isLoggedInX();
+    
+    console.log(`AuthGuardService.canActivate - authService.isLoggedIn() : ${isUserLoggedIn}}`)
+
+    isUserLoggedIn.then(isLoggedIn=>{
+      if(isLoggedIn)
+        return true;
+      else{
+        localStorage.setItem('requestedRoute',route.url.toString());
+        this.authService.startAuthentication();
+        return false;
+      }
+    });
+    return isUserLoggedIn;
+
 
     // if(this.authService.isUserLoggedIn()){
     //   console.log(`AuthGuardService.canActivate - authService.isLoggedIn() : TRUE`);
@@ -24,17 +41,17 @@ export class AuthGuardService implements CanActivate {
     //     return true;
     //   }
 
-    this.authService.isLoggedIn(state.url).subscribe(isLoggedIn=>{
-      console.log(`AuthGuardService.canActivate - authService.isLoggedIn() : ${isLoggedIn}`);
-      if(isLoggedIn){
-        return true;
-      }
+    // this.authService.isLoggedIn(state.url).subscribe(isLoggedIn=>{
+    //   console.log(`AuthGuardService.canActivate - authService.isLoggedIn() : ${isLoggedIn}`);
+    //   if(isLoggedIn){
+    //     return true;
+    //   }
 
-      this.authService.startAuthenticationAndSetOriginallyRequestedRoute(state.url);
-      return false;
-    })
+    //   this.authService.startAuthenticationAndSetOriginallyRequestedRoute(state.url);
+    //   return false;
+    // })
 
-    return this.authService.isLoggedIn(state.url);
+    // return this.authService.isLoggedIn(state.url);
 
 
   //  if(this.authService.isLoggedIn()){

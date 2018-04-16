@@ -16,15 +16,19 @@ export class AuthService {
 
   constructor() {
 
+    this.UserObservable = this.UserSubject.asObservable();
+
     //as soon as initialiazing the AuthService, get the user object through the UserManager
     this.manager.getUser().then(user => {
       this.user = user;
 
-      //trigger the update to all teh subsribers to the UserSubject
+      //trigger the update to all the subsribers to the UserSubject
       this.UserSubject.next(user);  
+   
     });
 
-    this.UserObservable = Observable.fromPromise(this.manager.getUser());
+    //this.UserObservable = Observable.fromPromise(this.manager.getUser());
+    //this.UserObservable = this.UserSubject.asObservable();
     
   }
 
@@ -53,6 +57,61 @@ export class AuthService {
       }
     });
   }
+
+  isLoggedInX(): Promise<boolean> {
+
+    return this.manager.getUser().then(user => {
+      this.user = user;
+    
+      // console.log(`AuthService.isLoggedInX, user : ${JSON.stringify(user) }`);
+      //trigger the update to all the subsribers to the UserSubject
+
+      if(user){
+        this.UserSubject.next(user);
+      }
+      
+
+      if (user && !user.expired) {
+
+        console.log(`AuthService.isLoggedInX, return TRUE`);
+        console.log(`isLoggedInX - user.expired: ${user.expired}, expires_in : ${user.expires_in}, user.expires_at : ${user.expires_at}`);
+      
+
+        return true;
+      } else {
+        console.log(`AuthService.isLoggedInX, return FALSE`);
+        
+        return false;
+      }
+
+    });
+  }
+
+  // isLoggedInY(): boolean {
+
+  //   let promise = this.manager.getUser().then(user => {
+  //     this.user = user;
+
+  //     //trigger the update to all the subsribers to the UserSubject
+  //     this.UserSubject.next(user);
+
+  //     if (user && !user.expired) {
+  //       return true;
+  //     } else {
+  //       return false;
+  //     }
+
+  //   });
+
+  //   // var a = yield promise;
+  //   // |         return a;
+
+  //   let a = await promise; 
+   
+  //  return a;
+
+  // }
+
 
   getClaims(): any {
     //return the claims attached to the user, available on the profile property on the User object. Since we have set filterProtocolClaims to true
@@ -87,41 +146,41 @@ export class AuthService {
     });
   }
 
-  private requestedRoute: string = "";
-  startAuthenticationAndSetOriginallyRequestedRoute(originallyRequestedRoute : string): Promise<void> {
-    console.log(`AuthService.startAuthenticationAndSetOriginallyRequestedRoute - originallyRequestedRoute : ${originallyRequestedRoute}`);
-    this.requestedRoute = originallyRequestedRoute;
+  // private requestedRoute: string = "";
+  // startAuthenticationAndSetOriginallyRequestedRoute(originallyRequestedRoute : string): Promise<void> {
+  //   console.log(`AuthService.startAuthenticationAndSetOriginallyRequestedRoute - originallyRequestedRoute : ${originallyRequestedRoute}`);
+  //   this.requestedRoute = originallyRequestedRoute;
     
-    //will initiate opening of the signin page hosted in the identity server (as it is configured in the UserManagerSettings)
-    return this.manager.signinRedirect();
-  }
+  //   //will initiate opening of the signin page hosted in the identity server (as it is configured in the UserManagerSettings)
+  //   return this.manager.signinRedirect();
+  // }
 
   
-  completeAuthenticationAndSetOriginallyRequestedRoute(): Promise<string> {
+  // completeAuthenticationAndSetOriginallyRequestedRoute(): Promise<string> {
 
-    this.manager.signinSilentCallback()
-    .then(r=>{
-      console.log(r);
-    })
-    //once the user provided the authentication credentials and successfully singed in in identity server
-    //the redirection to the configured UserManagerSettings.redirect_uri neeeds to happen from where call to AuthService.completeAuthentication can be made
-    //and this will ultimately achieve update of the refreshed user instance, potentially with a new token and new expiration
-    //signinRedirectCallback method will receive and handle incoming tokens, including token validation
-    //if UserManagerSettings.loadUserInfo is set to true, it will also call the user info endpoint to get any extra identity data it has been authorized to access.
-    return this.manager.signinRedirectCallback().then(user => {
+  //   this.manager.signinSilentCallback()
+  //   .then(r=>{
+  //     console.log(r);
+  //   })
+  //   //once the user provided the authentication credentials and successfully singed in in identity server
+  //   //the redirection to the configured UserManagerSettings.redirect_uri neeeds to happen from where call to AuthService.completeAuthentication can be made
+  //   //and this will ultimately achieve update of the refreshed user instance, potentially with a new token and new expiration
+  //   //signinRedirectCallback method will receive and handle incoming tokens, including token validation
+  //   //if UserManagerSettings.loadUserInfo is set to true, it will also call the user info endpoint to get any extra identity data it has been authorized to access.
+  //   return this.manager.signinRedirectCallback().then(user => {
      
      
-      this.user = user; 
-      return this.requestedRoute;
-    });
-  }
+  //     this.user = user; 
+  //     return this.requestedRoute;
+  //   });
+  // }
 
 
-  completeAuthenticationAndSetOriginallyRequestedRouteAndUserObservable(){
+  // completeAuthenticationAndSetOriginallyRequestedRouteAndUserObservable(){
 
-    this.UserObservable = Observable.fromPromise(this.manager.signinRedirectCallback());
+  //   this.UserObservable = Observable.fromPromise(this.manager.signinRedirectCallback());
  
-  }
+  // }
 
 }
 
