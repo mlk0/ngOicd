@@ -28,8 +28,12 @@
       "scripts": [],
       "environmentSource": "environments/environment.ts",
       "environments": {
-        "dev": "environments/environment.ts",
-        "prod": "environments/environment.prod.ts"
+        "dev": "environments/environment.dev.ts",
+        "dev_apim": "environments/environment.dev_apim.ts",
+        
+        "local": "environments/environment.local.ts",
+        "devx": "environments/environment.ts"
+        
       }
     }
   ],

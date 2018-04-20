@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from './services/auth.service';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -7,9 +8,25 @@ import { AuthService } from './services/auth.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  env: any;
   title = 'app';
 
-  constructor(private authService : AuthService) { }
+  signOut(){
+     this.authService.signout();
+  }
+
+
+  clearState(){
+    this.authService.clearState();
+  }
+
+  removeUser(){
+    this.authService.removeUser();
+  }
+
+  constructor(private authService : AuthService) { 
+    this.env = environment;
+  }
 
   ngOnInit() {
     // this.authService.UserObservable.subscribe(user=>{

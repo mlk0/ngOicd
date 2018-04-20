@@ -1,7 +1,7 @@
 <p class="protected">
   expires_in :  
 
-  {{(this.authService.UserObservable | async)?.expires_in}}
+  {{(user$ | async)?.expires_in}}
 
 </p>
 

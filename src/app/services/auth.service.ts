@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { UserManager, UserManagerSettings, User } from 'oidc-client';
 import { Observable, Subject } from 'rxjs/Rx';
+import { environment } from '../../environments/environment';
  
 
 @Injectable()
@@ -29,34 +30,39 @@ export class AuthService {
    
     });
  
+   
+
+    this.manager.events.addUserLoaded(function(){
+      console.log("tuserLoaded");
+    });
+
+    this.manager.events.addUserUnloaded(function(){
+      console.log("userUnloaded");
+    });
+
+    this.manager.events.addAccessTokenExpiring(function(){
+      console.log("accessTokenExpiring");
+    });
+
+    this.manager.events.addAccessTokenExpired(function(){
+      console.log("accessTokenExpired");
+    });
+
+
+    this.manager.events.addSilentRenewError(function(){
+      console.log("userSignedOut");
+    });
+
+    this.manager.events.addUserSignedOut(function(){
+      console.log("userSignedOut");
+    });
+    
+
   }
 
-  // isUserLoggedIn(): boolean {
-  //   //if we have a user and if we do, well check if it is still has a valid (not expired) token
-  //   return this.user != null && !this.user.expired;
-  // }
+ 
 
-  //guard can subscribe to this and decide when to continue the redirection
-  // isLoggedIn(requestedRoute : string): Observable<boolean> {
-
-  //   let userPromise = this.manager.getUser();
-  //   this.UserObservable = Observable.fromPromise(userPromise);
-
-  //   return Observable.fromPromise(userPromise)
-  //   .map<User, boolean>((user) => {
-
-  //     //update all those subsribed to the UserSubject
-  //     this.UserSubject.next(user);
-
-  //     if (user && !user.expired) {
-  //       return true;
-  //     } else {
-
-  //       return false;
-  //     }
-  //   });
-  // }
-
+  
   isLoggedInX(): Promise<boolean> {
 
     return this.manager.getUser().then(user => {
@@ -123,60 +129,100 @@ export class AuthService {
     });
   }
 
-  // private requestedRoute: string = "";
-  // startAuthenticationAndSetOriginallyRequestedRoute(originallyRequestedRoute : string): Promise<void> {
-  //   console.log(`AuthService.startAuthenticationAndSetOriginallyRequestedRoute - originallyRequestedRoute : ${originallyRequestedRoute}`);
-  //   this.requestedRoute = originallyRequestedRoute;
-    
-  //   //will initiate opening of the signin page hosted in the identity server (as it is configured in the UserManagerSettings)
-  //   return this.manager.signinRedirect();
-  // }
-
-  
-  // completeAuthenticationAndSetOriginallyRequestedRoute(): Promise<string> {
-
-  //   this.manager.signinSilentCallback()
-  //   .then(r=>{
-  //     console.log(r);
-  //   })
-  //   //once the user provided the authentication credentials and successfully singed in in identity server
-  //   //the redirection to the configured UserManagerSettings.redirect_uri neeeds to happen from where call to AuthService.completeAuthentication can be made
-  //   //and this will ultimately achieve update of the refreshed user instance, potentially with a new token and new expiration
-  //   //signinRedirectCallback method will receive and handle incoming tokens, including token validation
-  //   //if UserManagerSettings.loadUserInfo is set to true, it will also call the user info endpoint to get any extra identity data it has been authorized to access.
-  //   return this.manager.signinRedirectCallback().then(user => {
-     
-     
-  //     this.user = user; 
-  //     return this.requestedRoute;
-  //   });
-  // }
-
-
-  // completeAuthenticationAndSetOriginallyRequestedRouteAndUserObservable(){
-
-  //   this.UserObservable = Observable.fromPromise(this.manager.signinRedirectCallback());
  
-  // }
+ 
+ 
+
+
+  signout() {
+    this.manager.getUser().then(user => {
+      return this.manager.signoutRedirect({ id_token_hint: user.id_token }).then(resp => {
+        console.log('signoutRedirect - completed', resp);
+        setTimeout(5000, () => {
+          console.log('testing to see if fired...');
+        });
+      }).catch(function (err) {
+        console.log(err);
+      });
+    });
+  };
+  
+  signoutCallback() {
+    //not working as I expect
+    this.manager.signoutRedirectCallback().then(resp=>{
+      console.log('signoutRedirectCallback - completed', resp);
+      this.isLoggedInX().then(u=>{
+        console.log("isLoggedInX after signoutRedirectCallback ")
+      });
+    })
+
+   
+  };
+
+
+
+  clearState() {
+    //clearStaleState: Removes stale state entries in storage for incomplete authorize requests.
+    this.manager.clearStaleState().then(function () {
+      console.log('clearStateState success');
+    }).catch(function (e) {
+      console.log('clearStateState error', e.message);
+    });
+  }
+
+  removeUser() {
+    this.manager.removeUser().then(() => {
+      console.log('user removed');
+    }).catch(function (err) {
+      console.log(err);
+    });
+  }
+
+
+
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*
 The UserManager’s constructor requires a settings object of UserManagerSettings. 
 getClientSettings will provide the settings.
 */
-export function getClientSettings(): UserManagerSettings {
-  return {
+export function getClientSettings() : UserManagerSettings {
+  
+console.log('in getClientSettings');
+// console.log(environment);
+
+
+  let userManagerSettings = 
+  {
     //TODO:  1. update this to read from ENV file,  
     //FIXME: 2. tokenize the environment.prod.ts  
     //TODO:  3. provide the environment specific token values in Octopus
-    //authority: 'https://localhost:44300/identity', //'http://localhost:5555/',
-    authority: 'https://dev-ws-esa.np.dhltd.com/identity', //'http://localhost:5555/',
+   // authority: 'https://localhost:44300/identity', 
+   //authority: 'https://dev-ws-esa.np.dhltd.com/identity',
+   //authority: 'https://apigatewaypat.dh.com/es/sb/identity',
+   authority: `${environment.API_HOST}/identity`,
     
-    client_id: 'js', //'angular_spa',
-    redirect_uri: 'http://localhost:4200/auth-callback',  //registered URI that the OpenID Connect provider can redirect a user to once they log out
-    post_logout_redirect_uri: 'http://localhost:4200/',
+   //client_id: 'js', 
+   client_id: environment.IDENTITY_CLIENT_ID,
+   
+
+    redirect_uri: `${environment.CLIENT_HOST}/auth-callback`, // 'http://localhost:4200/auth-callback',  //registered URI that the OpenID Connect provider can redirect a user to once they log out
+    post_logout_redirect_uri: environment.CLIENT_HOST,
     
     //TODO: try with both id_token and token
     response_type: 'token', //"id_token token",
@@ -195,11 +241,16 @@ export function getClientSettings(): UserManagerSettings {
   
     //REVIEW: https://www.scottbrady91.com/OpenID-Connect/Silent-Refresh-Refreshing-Access-Tokens-when-using-the-Implicit-Flow
     automaticSilentRenew: true,
-    silent_redirect_uri: 'http://localhost:4200/silent-refresh.html'
-  
-    ,ui_locales:"en-CA"
-    ,accessTokenExpiringNotificationTime: 4
-    ,acr_values : "productcode:ESDH-MIA"
+    silent_redirect_uri: `${environment.CLIENT_HOST}/silent-refresh.html`,
+    revokeAccessTokenOnSignout : false,
 
+    ui_locales:"en-CA",
+    accessTokenExpiringNotificationTime: 4,
+    acr_values: `productcode:${environment.PRODUCT_CODE}`, //acr_values :  "productcode:ESDH-MIA"
+    
   };
+
+  console.log(userManagerSettings);
+
+  return userManagerSettings;
 }

@@ -1,5 +1,24 @@
 
 <app-user-status></app-user-status>
+<div>
+  Environment :
+  <pre>
+    {{env | json}}
+
+  </pre>
+   
+  
+  
+</div>
+
+
+<div>
+  <button (click)="clearState()" id='clearState'>clear stale state</button>
+  <button (click)="removeUser()" id='removeUser'>remove user</button>
+
+  <button (click)='signOut()'>Signout</button>
+</div>
+
 <router-outlet></router-outlet>
 <ul>
   <li>

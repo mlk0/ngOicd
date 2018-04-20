@@ -5,10 +5,11 @@
 
 export const environment = {
   production: false,
-
-  API_HOST : 'https://APIGateway.dh.com/es/sb',
+ 
+  API_HOST : 'https://APIGatewayPAT.dh.com/es/sb',
   CLIENT_HOST : 'http://localhost:4200',
-  IDENTITY_CLIENT_ID : 'spa',
+  IDENTITY_CLIENT_ID : 'spa_dev_apim',
+
   PRODUCT_CODE : 'ESDH-MIA'
 
 };
