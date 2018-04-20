@@ -12,7 +12,9 @@
         "favicon.ico",
         { "glob":"**/*.js", "input":"../node_modules/oidc-client/dist/","output":"./"},
        
-        { "glob": "silent-refresh.html", "input": "./", "output": "./" }
+        { "glob": "silent-refresh.html", "input": "./", "output": "./" },
+       
+        "web.config"
 
       ],
       "index": "index.html",
@@ -30,6 +32,8 @@
       "environments": {
         "dev": "environments/environment.dev.ts",
         "dev_apim": "environments/environment.dev_apim.ts",
+        "dev_oicd": "environments/environment.dev_oicd.ts",
+        "dev_oicd2": "environments/environment.dev_oicd2.ts",
         
         "local": "environments/environment.local.ts",
         "devx": "environments/environment.ts"

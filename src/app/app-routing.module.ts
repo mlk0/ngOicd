@@ -9,25 +9,28 @@ import { WelcomeComponent } from './welcome/welcome.component';
 
 const routes: Routes = [
   {
+       
       path: '',
-      component:WelcomeComponent //children: []
+      component:WelcomeComponent,
+      // children: [
+      //   { path: 'auth-callback',  component : AuthCallbackComponent },
+      //   { path: 'unsecured', component: NotSecuredComponent     },
+      //   { path: 'protected', component: ProtectedComponent, canActivate : [AuthGuardService ]  }
+        
+      // ]
   },
 
-  
+  { path: '', redirectTo: 'welcome', pathMatch: 'full' },
 
-  {
-    path : 'auth-callback',
-    component : AuthCallbackComponent
-  },
-  {
-    path: 'unsecured',
-    component: NotSecuredComponent   
-  },
-  {
-      path: 'protected',
-      component: ProtectedComponent,
-      canActivate : [AuthGuardService ]
-  }
+
+  { path: 'welcome', component:WelcomeComponent },    
+ 
+  { path: 'auth-callback',  component : AuthCallbackComponent },
+  { path: 'unsecured', component: NotSecuredComponent     },
+  { path: 'protected', component: ProtectedComponent, canActivate : [AuthGuardService ]  }
+
+,
+{ path: '**', redirectTo: 'welcome', pathMatch: 'full' }
 
 ];
 

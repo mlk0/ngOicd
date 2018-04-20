@@ -227,45 +227,38 @@ console.log('in getClientSettings');
 
   let userManagerSettings = 
   {
-    //TODO:  1. update this to read from ENV file,  
-    //FIXME: 2. tokenize the environment.prod.ts  
     //TODO:  3. provide the environment specific token values in Octopus
-   // authority: 'https://localhost:44300/identity', 
-   //authority: 'https://dev-ws-esa.np.dhltd.com/identity',
-   //authority: 'https://apigatewaypat.dh.com/es/sb/identity',
    authority: `${environment.API_HOST}/identity`,
-    
-   //client_id: 'js', 
-   client_id: environment.IDENTITY_CLIENT_ID,
+        
+      client_id: environment.IDENTITY_CLIENT_ID,
+
+      redirect_uri: `${environment.CLIENT_HOST}/auth-callback`,
+
+      //registered URI that the OpenID Connect provider can redirect a user to once they log out
+      post_logout_redirect_uri: environment.CLIENT_HOST,
+
+      //TODO: try with both id_token and token
+      response_type: 'token', //"id_token token",
+
+      scope: 'customer',
+
+      // protocol level claims such as nbf, iss, at_hash, and nonce from being extracted from the identity token as profile data. These claims aren’t typically of much use outside of token validation
+      filterProtocolClaims: true,
+
+      // allows the library to automatically call the OpenID Connect Provider’s User Info endpoint using the received access token, in order to access additional identity data about the authenticated user. This is true by default
+      loadUserInfo: true,
+
+      //REVIEW: https://www.scottbrady91.com/OpenID-Connect/Silent-Refresh-Refreshing-Access-Tokens-when-using-the-Implicit-Flow
+      automaticSilentRenew: true,
    
+      silent_redirect_uri: `${environment.CLIENT_HOST}/silent-refresh.html`,
+   
+      revokeAccessTokenOnSignout: false,
 
-    redirect_uri: `${environment.CLIENT_HOST}/auth-callback`, // 'http://localhost:4200/auth-callback',  //registered URI that the OpenID Connect provider can redirect a user to once they log out
-    post_logout_redirect_uri: environment.CLIENT_HOST,
-    
-    //TODO: try with both id_token and token
-    response_type: 'token', //"id_token token",
-    // response_type: 'id_token token',
-    // response_type: 'token id_token',
+      ui_locales: "en-CA",
+      accessTokenExpiringNotificationTime: 4,
+      acr_values: `productcode:${environment.PRODUCT_CODE}`
 
-    //scope: "openid profile api1",
-    // scope: 'openid profile customer',
-    // scope: 'openid customer',
-    //scope: 'openid',
-    scope: 'customer',
-    
-
-    filterProtocolClaims: true, // protocol level claims such as nbf, iss, at_hash, and nonce from being extracted from the identity token as profile data. These claims aren’t typically of much use outside of token validation
-    loadUserInfo: true, //allows the library to automatically call the OpenID Connect Provider’s User Info endpoint using the received access token, in order to access additional identity data about the authenticated user. This is true by default
-  
-    //REVIEW: https://www.scottbrady91.com/OpenID-Connect/Silent-Refresh-Refreshing-Access-Tokens-when-using-the-Implicit-Flow
-    automaticSilentRenew: true,
-    silent_redirect_uri: `${environment.CLIENT_HOST}/silent-refresh.html`,
-    revokeAccessTokenOnSignout : false,
-
-    ui_locales:"en-CA",
-    accessTokenExpiringNotificationTime: 4,
-    acr_values: `productcode:${environment.PRODUCT_CODE}`, //acr_values :  "productcode:ESDH-MIA"
-    
   };
 
   console.log(userManagerSettings);
