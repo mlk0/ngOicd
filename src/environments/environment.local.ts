@@ -7,7 +7,7 @@ export const environment = {
   production: false,
 
   API_HOST : 'https://localhost:44300',
-  CLIENT_HOST : 'http://localhost:4200',
+  CLIENT_HOST : "http://localhost:4200",
   IDENTITY_CLIENT_ID : 'spa_local',
   PRODUCT_CODE : 'ESDH-MIA'
 

@@ -136,15 +136,33 @@ export class AuthService {
 
   signout() {
     this.manager.getUser().then(user => {
-      return this.manager.signoutRedirect({ id_token_hint: user.id_token }).then(resp => {
+
+      //new UserManager(getClientSettings()).signoutRedirect();
+      return this.manager.signoutRedirect({ id_token_hint: user.id_token, post_logout_redirect_uri : environment.CLIENT_HOST }).then(resp => {
+     // return this.manager.signoutRedirect({ id_token_hint: user.id_token, ClientId : getClientSettings().client_id, redirect_uri : getClientSettings().redirect_uri }).then(resp => {
+       
+      //return this.manager.signoutRedirect({post_logout_redirect_uri:'http://google.com'}).then(resp => {
+// return this.manager.signoutRedirect({redirectUrl:'http://google.com'}).then(resp => {
+
+
+ 
+
+  // return this.manager.signoutRedirect().then(resp => {
+     
         console.log('signoutRedirect - completed', resp);
+  
         setTimeout(5000, () => {
           console.log('testing to see if fired...');
         });
       }).catch(function (err) {
         console.log(err);
       });
+    
+      
+
     });
+
+
   };
   
   signoutCallback() {
