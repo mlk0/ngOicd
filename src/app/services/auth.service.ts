@@ -111,14 +111,15 @@ export class AuthService {
     console.log(`AuthService.startAuthentication`);
     //will initiate opening of the signin page hosted in the identity server (as it is configured in the UserManagerSettings)
     
-    //var clientRuntimeParams = {
-      // client_id: "tst",
-      // redirect_uri: `http://localhost:4200/auth-callback`,
-      // post_logout_redirect_uri: 'http://localhost:4200',
-      // silent_redirect_uri: `http://localhost:4200/silent-refresh.html`,
+    return this.manager.signinRedirect();
+    // var clientRuntimeParams = {
+    //   client_id: "tst",
+    //   redirect_uri: `http://localhost:4200/auth-callback`,
+    //   post_logout_redirect_uri: 'http://localhost:4200',
+    //   silent_redirect_uri: `http://localhost:4200/silent-refresh.html`,
     //   ui_locales: "MK"
     //  }
-    return this.manager.signinRedirect(clientRuntimeParams);
+    //return this.manager.signinRedirect(clientRuntimeParams);
   }
 
   completeAuthentication(): Promise<void> {
@@ -246,7 +247,7 @@ console.log('in getClientSettings');
       post_logout_redirect_uri: environment.CLIENT_HOST,
 
       //TODO: try with both id_token and token
-      response_type: 'id_token token', //"id_token token",
+      response_type: 'token', //"id_token token",
 
       scope: 'customer',
 
