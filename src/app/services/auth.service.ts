@@ -33,7 +33,7 @@ export class AuthService {
    
 
     this.manager.events.addUserLoaded(function(){
-      console.log("tuserLoaded");
+      console.log("userLoaded");
     });
 
     this.manager.events.addUserUnloaded(function(){

@@ -30,7 +30,12 @@
       "scripts": [],
       "environmentSource": "environments/environment.ts",
       "environments": {
+        
         "dev": "environments/environment.dev.ts",
+        "devMIA": "environments/environment.devMIA.ts",
+        "devRBC": "environments/environment.devRBC.ts",
+       
+                
         "dev_apim": "environments/environment.dev_apim.ts",
         "dev_oicd": "environments/environment.dev_oicd.ts",
         "dev_oicd2": "environments/environment.dev_oicd2.ts",

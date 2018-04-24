@@ -9,5 +9,6 @@ export const environment = {
   API_HOST : 'https://dev-ws-esa.np.dhltd.com',
   CLIENT_HOST : 'http://localhost:4200',
   IDENTITY_CLIENT_ID : 'spa_dev',
-  PRODUCT_CODE : 'ESDH-MIA'   
+  PRODUCT_CODE : 'ESRBC-FR'
+   
 };

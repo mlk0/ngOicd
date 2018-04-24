@@ -9,7 +9,7 @@ export const environment = {
   API_HOST : 'https://localhost:44300',
   CLIENT_HOST : "http://localhost:4200",
   IDENTITY_CLIENT_ID : 'spa_local',
-  PRODUCT_CODE : 'ESDH-MIA'
+  PRODUCT_CODE : 'ESRBC-FR'
 
  
 };
