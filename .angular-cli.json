@@ -36,9 +36,15 @@
         "devRBC": "environments/environment.devRBC.ts",
        
                 
-        "dev_apim": "environments/environment.dev_apim.ts",
         "dev_oicd": "environments/environment.dev_oicd.ts",
-        "dev_oicd2": "environments/environment.dev_oicd2.ts",
+        "dev_local_oicd": "environments/environment.dev_local_oicd.ts",
+        "dev_dev_oicd": "environments/environment.dev_dev_oicd.ts",
+        
+        "dev_apim": "environments/environment.dev_apim.ts",
+        
+  
+        
+        
         
         "local": "environments/environment.local.ts",
         "devx": "environments/environment.ts"
